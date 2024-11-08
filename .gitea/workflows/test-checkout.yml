@@ -1,0 +1,18 @@
+name: Test de checkout con bash
+run-name: Testeando que el checkout funciona correctamente
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Testeo:
+    runs-on: custom
+    steps:
+      - name: Usar acción de checkout
+        id: chekout
+        uses: http://gitea:3000/acciones/checkout@main
+      - name: Se hace ls del directorio
+        run: ls ./
+      - name: Se muestra el SHA del comit
+        run: echo "El SHA del commit es ${{ steps.chekout.outputs.commit }}"

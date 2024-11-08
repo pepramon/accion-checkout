@@ -1,0 +1,53 @@
+name: 'Checkout'
+description: 'Checkout a una versión particular del repositorio'
+inputs:
+  repositorio:
+    description: 'Nombre del repositorio. por ejemplo, actions/checkout. Valor por defecto ${{ github.repository }}'
+    default: ${{ github.repository }}
+  ref:
+    descripcion: >
+      Rama, tag o SHA para hacer checkout. Por defecto ira a master o main
+    default: ${{ github.ref }}
+  token:
+    description: >
+      Token de acceso personal. Se obtiene del entorno pero si se quiere hacer checkout de un repositiorio
+      esterno es necesario fijarlo. Valor por defecto ${{ github.token }}
+    default: ${{ github.token }}
+outputs:
+  ref:
+    descripcion: 'Rama, tag o sha donde se ha hecho checkout'
+  commit:
+    description: 'SHA donde se ha hecho checkout'
+runs:
+  using: 'composite'
+  steps:
+    - name: Ejecutar echo para ver que interpreta
+      run: |
+        # Separar la parte antes de '://'
+        protocolo="${GITHUB_SERVER_URL%%://*}"
+
+        # Separar la parte después de '://'
+        domain="${GITHUB_SERVER_URL#*://}"
+
+        # Cadena que clonar
+        clonar=$protocolo://$GITHUB_ACTOR:$INPUT_TOKEN@$domain/$INPUT_REPOSITORIO.git
+
+        # Se clona el repositorio
+        echo "Clonando repositorio"
+        git clone $clonar $GITHUB_WORKSPACE
+        
+        # Entrar al directorio del repositorio clonado
+        cd $GITHUB_WORKSPACE
+        
+        # Se va a la referencia específica
+        echo "Haciendo checkout a la referencia especifica $INPUT_REF"
+        git checkout -B rama-trabajo $INPUT_REF
+        
+        # Se preparan las salidas configuradas
+        COMMIT_SHA=$(git rev-parse HEAD)
+        
+        # Se pasan las salidas para otros procesos
+        echo "commit=$COMMIT_SHA" >> "$GITHUB_OUTPUT"
+        echo "ref=$REF" >> "$GITHUB_OUTPUT"
+        
+        
