@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Usar acción de checkout
         id: chekout
-        uses: http://gitea:3000/acciones/checkout@main
+        uses: http://gitea:3000/acciones/checkout@v1
       - name: Se hace ls del directorio
         run: ls ./
       - name: Se muestra el SHA del comit
