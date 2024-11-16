@@ -41,7 +41,7 @@ runs:
         
         # Se va a la referencia específica
         echo "Haciendo checkout a la referencia especifica $INPUT_REF"
-        git checkout -B rama-trabajo $INPUT_REF
+        git checkout $INPUT_REF 2>&1 > /dev/null
         
         # Se preparan las salidas configuradas
         COMMIT_SHA=$(git rev-parse HEAD)
