@@ -31,3 +31,7 @@ outputs:
     description: 'SHA donde se ha hecho checkout'
 
 ```
+
+## Comentarios adicionales
+
+Esta acción la uso en mi instancia privada de Gitea, pero debería funcionar correctamente en Github. Cuidado con el workfolw definido, ya que está adaptado a mi configuración.
